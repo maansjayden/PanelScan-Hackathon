@@ -55,3 +55,20 @@ Running log: what was done, errors hit, and how they were fixed.
   agent prompt + response validation), fresh pytest suite.
 - Frontend not scaffolded yet at time of writing — `App.tsx` upload UI
   provided as code for the user to drop in after running the Vite commands.
+
+## 2026-10-30 — Production architecture: Modal app, Meta URLs, frontend
+
+- Did: net-new `backend/modal_app.py` (vLLM + `guided_json` schema
+  enforcement, `fastapi_endpoint` webhook); Meta client pointed at
+  `https://api.meta.ai/v1` with model IDs `muse-voice-transcribe-1.0` /
+  `sam-3.1` and env-overridable endpoint paths; scaffolded the missing
+  Vite + Tailwind frontend and wrote the upload UI into `App.tsx`.
+- Error: user reported Vite/Tailwind setup complete, but no `frontend/`
+  existed anywhere on disk. Fix: scaffolded it directly
+  (`npm create vite`, Tailwind v3, config + CSS wiring) and verified.
+- Caution: Meta endpoint *paths* are not confirmed from official docs —
+  base URL + model IDs corroborated by multiple community sources only.
+  Must verify at `https://dev.meta.ai/docs` before the demo. Paths are
+  env-overridable (`VOICE_ENDPOINT_PATH`, `SAM_ENDPOINT_PATH`).
+- Caution: `MODEL_ID` in `modal_app.py` is a FILL-ME placeholder until the
+  exact Spark Open weights repo is confirmed from hackathon materials.

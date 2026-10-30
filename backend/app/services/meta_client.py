@@ -13,9 +13,14 @@ import httpx
 logger = logging.getLogger("panelScan.meta")
 
 _KEY = os.getenv("META_MODEL_API_KEY") or os.getenv("META_API_KEY") or ""
-_BASE = os.getenv("META_MODEL_API_BASE", "https://api.meta.example").rstrip("/")
-_VOICE_MODEL = os.getenv("VOICE_MODEL", "muse-voice-transcribe")
-_VISION_MODEL = os.getenv("SAM_MODEL", "SAM-3.1")
+_BASE = os.getenv("META_MODEL_API_BASE", "https://api.meta.ai/v1").rstrip("/")
+_VOICE_MODEL = os.getenv("VOICE_MODEL", "muse-voice-transcribe-1.0")
+_VISION_MODEL = os.getenv("SAM_MODEL", "sam-3.1")
+# VERIFY against https://dev.meta.ai/docs before relying on these paths: the
+# base URL + model IDs are corroborated by multiple community sources, but the
+# exact endpoint paths are not yet confirmed from official Meta docs.
+_VOICE_PATH = os.getenv("VOICE_ENDPOINT_PATH", "asr/transcribe").strip("/")
+_SAM_PATH = os.getenv("SAM_ENDPOINT_PATH", "sam/segment").strip("/")
 
 _TIMEOUT = httpx.Timeout(60.0, connect=10.0)
 
@@ -54,7 +59,7 @@ async def run_transcription(audio_bytes: bytes, filename: str) -> str:
         )
     try:
         data = await _post_multipart(
-            f"{_BASE}/v1/voice/transcribe", _VOICE_MODEL, "audio", audio_bytes
+            f"{_BASE}/{_VOICE_PATH}", _VOICE_MODEL, "audio", audio_bytes
         )
     except httpx.HTTPError as exc:
         raise MetaServiceError(f"transcription request failed: {exc}") from exc
@@ -78,7 +83,7 @@ async def run_segmentation(image_bytes: bytes, filename: str) -> dict:
         }
     try:
         return await _post_multipart(
-            f"{_BASE}/v1/sam/segment", _VISION_MODEL, "image", image_bytes
+            f"{_BASE}/{_SAM_PATH}", _VISION_MODEL, "image", image_bytes
         )
     except httpx.HTTPError as exc:
         raise MetaServiceError(f"segmentation request failed: {exc}") from exc
