@@ -72,3 +72,16 @@ Running log: what was done, errors hit, and how they were fixed.
   env-overridable (`VOICE_ENDPOINT_PATH`, `SAM_ENDPOINT_PATH`).
 - Caution: `MODEL_ID` in `modal_app.py` is a FILL-ME placeholder until the
   exact Spark Open weights repo is confirmed from hackathon materials.
+
+## 2026-10-30 — First push to GitHub
+
+- Did: pushed `main` (5 commits) to
+  `git@github.com:maansjayden/PanelScan-Hackathon.git`, tracking set.
+- Error: no remote configured at first. Fix: added user-supplied URL.
+- Error: HTTPS push needed interactive credentials (unavailable in agent
+  shell). Fix: switched to SSH.
+- Error: `Host key verification failed`. Fix: `ssh-keyscan` github.com into
+  `known_hosts`.
+- Error: `Permission denied (publickey)` — neither local key was on the
+  GitHub account. Fix: user added `id_ed25519.pub` via github.com/settings
+  keys; verified repo existed-but-empty with `ls-remote` first.
