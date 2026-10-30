@@ -1,0 +1,79 @@
+# PanelScan — Scope
+
+PanelScan is a 100% newly developed standalone web application built exclusively
+for the Meta Global AI Developer Hackathon. This repository was initialized
+fresh during the hackathon build period, and all code is net-new.
+
+Event: Meta Global AI Developer Hackathon
+Track: Indie Developer
+Theme: Build for Your World
+Bonus targets: Best Agentic Use-Case, Best Build on Meta Open Weight Models
+
+## 1. Problem (firsthand)
+
+Panel-beating quotes are manual: walk the car, handwritten notes, look up
+parts, type the quote. Slow, error-prone, breaks flow on the shop floor.
+
+## 2. Solution
+
+A standalone web app: snap a photo of the damage, speak the assessment aloud,
+receive an itemized AI-generated repair quote with per-panel confidence,
+ready to review and export.
+
+Demo line: "2021 VW T-Cross. Front bumper is gone, left fender needs panel
+beating, headlight assembly is cracked." → photo + voice → quote.
+
+## 3. Builder background
+
+Software Engineering student at WeThinkCode_, specializing in Data Engineering.
+
+Recent AI builds:
+
+- Umlimi: offline-first PWA for maize disease detection using a MobileNetV3
+  int8 model and ONNX Runtime.
+- Netgrade: passive security posture scanner using an async Python engine and
+  FastAPI.
+- Aegis: zero-trust execution boundary and cryptographic ledger for AI agents.
+
+## 4. How Meta models are used
+
+- SAM 3.1 (Meta Model API): visual segmentation of damage / affected panels.
+- Muse Voice Transcribe (Meta Model API): transcription of noisy shop-floor
+  audio.
+- Muse Spark Open (open weights, hosted on Modal): agentic core. Receives
+  SAM 3.1 segments + voice transcript and outputs the strict JSON quote.
+
+Agent loop: SAM 3.1 (vision) + Muse Voice (transcription) → Muse Spark Open
+on Modal (synthesis) → strict JSON quote. Multi-input synthesis into one
+validated estimate, not a single chat call.
+
+## 5. Architecture
+
+React (Vite) → FastAPI `POST /api/assess-damage` (multipart image+audio) →
+parallel SAM 3.1 + Voice Transcribe → Muse Spark Open on Modal → strict JSON
+`QuoteEstimate` → displayed in the app for review and export.
+
+## 6. MVP scope (Nov 4)
+
+- One photo + one voice memo → one `QuoteEstimate`.
+- Strict JSON contract: vehicle_summary, damage_items[] (panel_name,
+  damage_type, recommended_action, ai_confidence_score),
+  total_parts_estimate_zar, total_labor_hours.
+- Works on one real car in the ≤3 min demo video.
+- Fallback: stubbed mock JSON so the app works even if a model call fails.
+
+Out of scope: video stream, multi-car batch, payments, parts ordering.
+
+## 7. Risks + mitigations
+
+- Noisy audio → Voice Transcribe + short structured utterances + manual edit.
+- SAM output shape differs → bounding-box/panel-label adapter.
+- Spark Open hosting/latency → Modal; prompt pins JSON schema; server-side
+  validation before returning the estimate.
+
+## 8. Submission checklist
+
+- [x] Track: Indie Developer / Theme: Build for Your World
+- [ ] Modal endpoint live; open-weights use documented
+- [ ] Demo video ≤3 min, live car, voice + photo → quote
+- [ ] Repo runs from README, no secrets committed

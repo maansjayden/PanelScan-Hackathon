@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Env / secrets — never commit .env
+.env
+.env.local
+*.pem
+*.key
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# Uploads / media scratch
+uploads/
+*.mp3
+*.wav
+*.m4a
+*.mp4
+*.jpg
+*.jpeg
+*.png
+
+# pytest / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage.xml
+htmlcov/
