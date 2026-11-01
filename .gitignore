@@ -30,6 +30,7 @@ Thumbs.db
 
 # Uploads / media scratch
 uploads/
+backend/data/
 *.mp3
 *.wav
 *.m4a

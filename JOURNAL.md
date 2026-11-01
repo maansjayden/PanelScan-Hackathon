@@ -85,3 +85,23 @@ Running log: what was done, errors hit, and how they were fixed.
 - Error: `Permission denied (publickey)` — neither local key was on the
   GitHub account. Fix: user added `id_ed25519.pub` via github.com/settings
   keys; verified repo existed-but-empty with `ls-remote` first.
+
+## 2026-11-01 — Muse app integration and VS Code profile
+
+- Verified the current Meta docs for Muse Voice multipart transcription,
+  Responses API image inputs, and SAM 3.1 segmentation. Replaced the
+  unverified multipart endpoints and non-deployable Modal placeholder with
+  Muse Voice, SAM 3.1, and Muse Spark Model API adapters.
+- Muse Spark now receives the mechanic transcript, original image, and compact
+  SAM bounding boxes. Large SAM mask payloads are not sent to the quote model;
+  the returned estimate is validated against `QuoteEstimate`.
+- Added browser-side conversion of recorded/uploaded audio to mono 24 kHz PCM
+  WAV, backend WAV validation, project `.env` loading, and explicit
+  `PANELSCAN_DEMO_MODE` behavior.
+- Installed Meta Muse Code CLI 1.4.14 and added a personal VS Code custom
+  agent at the active profile's `agents/` folder. CLI authentication still
+  needs to be completed by the user.
+- Verified backend tests and Ruff checks, and frontend production build and
+  lint. Live Meta API calls remain unverified because no API key was supplied.
+- The hosted Model API path is now the working target; the Muse Spark Open
+  weights bonus path is not implemented.
